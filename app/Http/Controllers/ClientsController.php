@@ -102,7 +102,7 @@ class ClientsController extends Controller
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, clients $clients)
+    public function update(Request $request,  $clients)
     {
         $validated = $request->validate([
             'name' => 'required',
