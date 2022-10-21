@@ -21,6 +21,7 @@ class ClientsFactory extends Factory
             'email'=>$this->faker->freeEmail(),
             'nivel' => $this-> faker->randomElement(['principiante', 'avanzado', 'experto']),
             'injures' => $this-> faker->randomElement(['si', 'no', 'recuperado']),
+            'time'=>$this->faker->date(),
             'companies_id'=>$this->faker->numberBetween($min = 2 , $max = 10),
         ];
     }

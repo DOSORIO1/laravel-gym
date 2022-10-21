@@ -61,6 +61,7 @@ class ClientsController extends Controller
             'weight' =>  'required|numeric|digits_between:1,3',
             'nivel' => 'required',
             'email' => 'required',
+            
             'injures' => 'required'
 
         ]);
@@ -91,7 +92,7 @@ class ClientsController extends Controller
      */
     public function edit(clients $clients)
     {
-        //
+
     }
 
     /**
@@ -103,7 +104,23 @@ class ClientsController extends Controller
      */
     public function update(Request $request, clients $clients)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'age' => 'required|numeric|digits_between:1,2',
+            'weight' =>  'required|numeric|digits_between:1,3',
+            'nivel' => 'required',
+            'email' => 'required',
+            'injures' => 'required'
+
+        ]);
+
+        $clients = clients::find($clients);
+        $clients ->fill($request->all())->save();
+        return response()->json([
+            'clients'=> $clients
+        ]);
+
+        
     }
 
     /**
@@ -112,8 +129,11 @@ class ClientsController extends Controller
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy(clients $clients)
+    public function destroy($id)
     {
+        $new_clients = clients::find($id);
+        $new_clients ->delete();
+        
         //
     }
 }
