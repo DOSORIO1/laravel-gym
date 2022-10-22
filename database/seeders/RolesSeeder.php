@@ -36,6 +36,13 @@ class RolesSeeder extends Seeder
                 'description' => 'Usuario que administra el punto de venta, registra los pagos y crea clientes, toma la asistencia de los clientes',
                 'active' => true,
             ],
+            [
+                //id: 4
+                'name' => 'Client',
+                'code' => 'C',
+                'description' => 'Clientes de la empresa',
+                'active' => true,
+            ],
             
         ]);
     }

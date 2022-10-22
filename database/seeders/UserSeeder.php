@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        User::factory(30)->create();
         User::insert([
             [
                 'name' => 'Daniel Osorio',

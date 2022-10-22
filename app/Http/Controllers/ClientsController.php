@@ -12,19 +12,28 @@ class ClientsController extends Controller
 {
     public function index()
     {
-        $client_list = clients::all();
-        return  $client_list;
+        // $client_list = clients::all();
+        // return  $client_list;
 
         $clients_list = DB::select(
             '
-            SELECT  clients.name, clients.age, clients.weight,clients.nivel,clients.fingerprint,clients.email,clients.injures, clients.created_at
-            FROM clients;
+            SELECT clients.*, users.name,users.email, payments.start_date, payments.finish_date, rates.name AS tarifa, rates.price, users.roles_id, clients.companies_id
+            FROM clients, users, payments, rates, roles, companies
+            WHERE clients.users_id = users.id
+            AND  clients.id = payments.clients_id
+            AND rates.id = payments.rates_id
+            AND companies.id = clients.companies_id
+            AND users.roles_id = roles.id
+            AND roles.code = "C"  
+            ORDER BY `clients`.`users_id` ASC
             
             '
-            // SELECT roles.name, users.name
-            // FROM roles, users
-            // WHERE roles.id = users.roles_id
-            // AND roles.code = "C"
+            //    SELECT clients.age, clients.weight, clients.nivel, clients.injures, users.name,users.email,payments.start_date, payments.finish_date,rates.name AS tarifa ,rates.price,users.roles_id
+            //     FROM clients, users,payments,rates, roles
+            //     WHERE clients.users_id = users.id
+            //     AND  clients.id = payments.clients_id
+            //     AND rates.id = payments.rates_id
+            //     AND users.roles_id = 4
         );
 
         return response([
@@ -61,7 +70,6 @@ class ClientsController extends Controller
             'weight' =>  'required|numeric|digits_between:1,3',
             'nivel' => 'required',
             'email' => 'required',
-            
             'injures' => 'required'
 
         ]);
@@ -70,7 +78,7 @@ class ClientsController extends Controller
         $new_clients->save();
 
 
-        return response(['message'=> 'ok'], 200);
+        return response(['message' => 'ok'], 200);
     }
 
     /**
@@ -92,7 +100,6 @@ class ClientsController extends Controller
      */
     public function edit(clients $clients)
     {
-
     }
 
     /**
@@ -115,12 +122,10 @@ class ClientsController extends Controller
         ]);
 
         $clients = clients::find($clients);
-        $clients ->fill($request->all())->save();
+        $clients->fill($request->all())->save();
         return response()->json([
-            'clients'=> $clients
+            'clients' => $clients
         ]);
-
-        
     }
 
     /**
@@ -132,8 +137,8 @@ class ClientsController extends Controller
     public function destroy($id)
     {
         $new_clients = clients::find($id);
-        $new_clients ->delete();
-        
+        $new_clients->delete();
+
         //
     }
 }

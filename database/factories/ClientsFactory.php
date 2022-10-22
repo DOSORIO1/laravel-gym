@@ -14,15 +14,15 @@ class ClientsFactory extends Factory
     public function definition()
     {
         return [
-            'name'=>$this->faker->name(),
+            // 'name'=>$this->faker->name(),
             'age'=>$this->faker->numberBetween($min = 14 , $max = 50),
             'weight'=>$this->faker->numberBetween($min = 50 , $max = 120),
             'fingerprint'=>$this->faker->sha256(),
-            'email'=>$this->faker->freeEmail(),
+            // 'email'=>$this->faker->freeEmail(),
             'nivel' => $this-> faker->randomElement(['principiante', 'avanzado', 'experto']),
             'injures' => $this-> faker->randomElement(['si', 'no', 'recuperado']),
-            'time'=>$this->faker->date(),
             'companies_id'=>$this->faker->numberBetween($min = 2 , $max = 10),
+            'users_id'=>$this->faker->numberBetween($min = 2 , $max = 20),
         ];
     }
 }

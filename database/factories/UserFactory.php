@@ -18,7 +18,7 @@ class UserFactory extends Factory
             'name'=>$this->faker->name(),
             'email'=>$this->faker->freeEmail(),
             'password'=>$this->faker->password(),
-            'roles_id'=>$this->faker->numberBetween($min = 2 , $max = 3),
+            'roles_id'=>$this->faker->numberBetween($min = 3, $max = 4),
             'companies_id'=>$this->faker->numberBetween($min = 1 , $max = 10),
         ];
     }

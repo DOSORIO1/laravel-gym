@@ -14,7 +14,8 @@ class AttendancesFactory extends Factory
     public function definition()
     {
         return [
-            'time'=>$this->faker->date(),
+            'time'=>$this->faker->time(),
+            'date'=>$this->faker->date(),
             'clients_id'=>$this->faker->numberBetween($min = 1 , $max = 20),
         ];
     }

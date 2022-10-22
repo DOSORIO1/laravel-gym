@@ -17,8 +17,8 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->foreignId('rates_id')->constrained();
             $table->foreignId('clients_id')->constrained();
-            $table->dateTime('start_date');
-            $table->dateTime('finish_date');
+            $table->date('start_date');
+            $table->date('finish_date');
             $table->timestamps();
         });
     }

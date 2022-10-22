@@ -16,7 +16,8 @@ class CreateAttendancesTable extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('clients_id')->constrained();
-            $table->dateTime('time');
+            $table->time('time');
+            $table->date('date');
             $table->timestamps();
         });
     }

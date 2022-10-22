@@ -15,14 +15,14 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            // $table->string('name');
             $table->bigInteger('age');
             $table->bigInteger('weight');
             $table->string('nivel')->nullable();
             $table->string('fingerprint')->nullable();
-            $table->string('email');
+            // $table->string('email');
             $table->string('injures');
-            $table->dateTime('time')->nullable();
+            $table->foreignId('users_id')->constrained();
             $table->foreignId('companies_id')->constrained();
             $table->timestamps();
         });

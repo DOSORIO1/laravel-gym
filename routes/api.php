@@ -4,6 +4,8 @@ use App\Http\Controllers\api\NewPasswordController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\ClientsController;
+use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\RatesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Sanctum;
@@ -39,3 +41,5 @@ Route::post('reset-password', [NewPasswordController::class, 'Reset']);
 ///// clients
 Route::resource('/clients', ClientsController::class);
 Route::resource('/attendances', AttendancesController::class);
+
+Route::resource('/companies/rates/{id}', [CompaniesController::class], 'rates');
