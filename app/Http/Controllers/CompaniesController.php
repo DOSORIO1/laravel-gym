@@ -82,4 +82,12 @@ class CompaniesController extends Controller
     {
         //
     }
+    public function rates($companies_id)
+    {
+        $companies = companies::find($companies_id);
+        $rates_list = $companies->rates;
+        return response([
+            'rates_list' => $rates_list
+        ]);
+    }
 }

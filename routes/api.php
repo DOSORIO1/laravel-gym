@@ -41,5 +41,6 @@ Route::post('reset-password', [NewPasswordController::class, 'Reset']);
 ///// clients
 Route::resource('/clients', ClientsController::class);
 Route::resource('/attendances', AttendancesController::class);
-
-Route::resource('/companies/rates/{id}', [CompaniesController::class], 'rates');
+// tarifa
+Route::resource('/rates', RatesController::class);
+Route::post('/companies/rates/{id}', [CompaniesController::class], 'rates');

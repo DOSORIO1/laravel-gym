@@ -14,7 +14,9 @@ class RatesController extends Controller
      */
     public function index()
     {
-        //
+      return response([
+        'rates_list' => rates::all()
+      ]);
     }
 
     /**
