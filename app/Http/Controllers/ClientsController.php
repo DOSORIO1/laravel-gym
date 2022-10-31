@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\clients;
+use App\Models\payments;
+use App\Models\User;
 use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,18 +67,47 @@ class ClientsController extends Controller
     {
 
         $validated = $request->validate([
+            //user
             'name' => 'required',
+            'email' => 'required',
+            'password' => 'required|min:6|confirmed',
+            //clients
             'age' => 'required|numeric|digits_between:1,2',
             'weight' =>  'required|numeric|digits_between:1,3',
+            'injures' => 'required',
             'nivel' => 'required',
-            'email' => 'required',
-            'injures' => 'required'
-
+            //payments
+            'total' => 'required|numeric',
+            'start_date' => 'required',            
         ]);
 
-        $new_clients = clients::create($request->all());
+        $new_user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'roles_id' => $request->roles_id, //id rol
+            'companies_id' => $request->companies_id,            
+        ]);
+        $new_user->save();
+
+        $new_clients = clients::create([
+            'users_id' => $new_user->id, //id user
+            'age' => $request->age,
+            'weight' => $request->weight,
+            'nivel' => $request->nivel,
+            'injuries' => $request->injuries, 
+            'companies_id' => $request->companies_id,            
+        ]);
         $new_clients->save();
 
+        $new_payment = payments::create([
+            'rates_id' => $request->rates_id, 
+            'clients_id' => $new_clients->id, //id client
+            'total' => $request->total,
+            'start_date' => $request->start_date,
+            'finish_date' => $request->finish_date,                       
+        ]);
+        $new_payment->save();
 
         return response(['message' => 'ok'], 200);
     }
