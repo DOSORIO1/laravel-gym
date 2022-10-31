@@ -95,7 +95,7 @@ class ClientsController extends Controller
             'age' => $request->age,
             'weight' => $request->weight,
             'nivel' => $request->nivel,
-            'injuries' => $request->injuries, 
+            'injures' => $request->injures, 
             'companies_id' => $request->companies_id,            
         ]);
         $new_clients->save();
