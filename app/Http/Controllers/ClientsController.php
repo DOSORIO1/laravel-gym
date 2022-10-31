@@ -105,7 +105,7 @@ class ClientsController extends Controller
             'clients_id' => $new_clients->id, //id client
             'total' => $request->total,
             'start_date' => $request->start_date,
-            'finish_date' => $request->finish_date, //                      
+            'finish_date' => $request->finish_date,                   
         ]);
         $new_payment->save();
 
