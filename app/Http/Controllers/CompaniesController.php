@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\companies;
+use App\Models\rates;
 use Illuminate\Http\Request;
 
 class CompaniesController extends Controller

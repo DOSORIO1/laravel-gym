@@ -77,7 +77,7 @@ class ClientsController extends Controller
             'injures' => 'required',
             'nivel' => 'required',
             //payments
-            'total' => 'required|numeric',
+            // 'total' => 'required|numeric',
             'start_date' => 'required',            
         ]);
 

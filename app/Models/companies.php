@@ -10,4 +10,8 @@ class companies extends Model
     use HasFactory;
     protected $table = 'companies';
     protected $guarded = [];
+
+    public function rates(){
+        return $this->hasMany(rates::class);
+    }
 }
