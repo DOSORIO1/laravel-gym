@@ -90,4 +90,6 @@ class CompaniesController extends Controller
             'rates_list' => $rates_list
         ]);
     }
+
+    
 }
