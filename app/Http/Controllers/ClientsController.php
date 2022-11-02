@@ -10,10 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class ClientsController extends Controller
-{
-    public function index()
-    {
+class ClientsController extends Controller {
+    public function index() {
         // $client_list = clients::all();
         // return  $client_list;
 
@@ -52,8 +50,7 @@ class ClientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return View('create');
     }
 
@@ -63,13 +60,12 @@ class ClientsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
 
         $validated = $request->validate([
             //user
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|min:6|confirmed',
             //clients
             'age' => 'required|numeric|digits_between:1,2',
@@ -118,8 +114,7 @@ class ClientsController extends Controller
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function show(clients $clients)
-    {
+    public function show(clients $clients) {
         //
     }
 
@@ -129,8 +124,7 @@ class ClientsController extends Controller
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function edit(clients $clients)
-    {
+    public function edit(clients $clients) {
     }
 
     /**
@@ -140,22 +134,51 @@ class ClientsController extends Controller
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $payment_id)
-    {
-        $validated = $request->validate([
-            'name' => 'required',
-            'age' => 'required|numeric|digits_between:1,2',
-            'weight' =>  'required|numeric|digits_between:1,3',
-            'nivel' => 'required',
-            'email' => 'required',
-            'injures' => 'required'
-
-        ]);
+    public function update(Request $request, $payment_id) {
 
         $payment = payments::find($payment_id);
-        $client = clients::find($payment->clients_id);  
+        $client = clients::find($payment->clients_id);
         $user = User::find($client->users_id);
 
+        $validated = $request->validate([
+            //user
+            'name' => 'required',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'required|min:6|confirmed',
+            //clients
+            'age' => 'required|numeric|digits_between:1,2',
+            'weight' =>  'required|numeric|digits_between:1,3',
+            'injures' => 'required',
+            'nivel' => 'required',
+            //payments
+            // 'total' => 'required|numeric',
+            'start_date' => 'required',
+        ]);
+
+        $user->fill([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'roles_id' => 4, //Rol cliente
+            'companies_id' => $request->companies_id,
+        ]);
+        $user->save();
+
+        $client->fill([
+            'age' => $request->age,
+            'weight' => $request->weight,
+            'nivel' => $request->nivel,
+            'injures' => $request->injures,
+        ]);
+        $client->save();
+
+        $payment = payments::create([
+            'rates_id' => $request->rates_id,
+            'total' => $request->total,
+            'start_date' => $request->start_date,
+            'finish_date' => $request->finish_date,
+        ]);
+        $payment->save();
 
         //$clients->fill($request->all())->save();
         return response(['message' => 'ok'], 200);
@@ -167,8 +190,7 @@ class ClientsController extends Controller
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $new_clients = clients::find($id);
         $new_clients->delete();
 
