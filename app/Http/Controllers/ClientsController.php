@@ -78,15 +78,15 @@ class ClientsController extends Controller
             'nivel' => 'required',
             //payments
             // 'total' => 'required|numeric',
-            'start_date' => 'required',            
+            'start_date' => 'required',
         ]);
 
         $new_user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            'roles_id' => $request->roles_id, //id rol
-            'companies_id' => $request->companies_id,            
+            'roles_id' => 4, //Rol cliente
+            'companies_id' => $request->companies_id,
         ]);
         $new_user->save();
 
@@ -95,17 +95,17 @@ class ClientsController extends Controller
             'age' => $request->age,
             'weight' => $request->weight,
             'nivel' => $request->nivel,
-            'injures' => $request->injures, 
-            'companies_id' => $request->companies_id,            
+            'injures' => $request->injures,
+            'companies_id' => $request->companies_id,
         ]);
         $new_clients->save();
 
         $new_payment = payments::create([
-            'rates_id' => $request->rates_id, 
+            'rates_id' => $request->rates_id,
             'clients_id' => $new_clients->id, //id client
             'total' => $request->total,
             'start_date' => $request->start_date,
-            'finish_date' => $request->finish_date,                   
+            'finish_date' => $request->finish_date,
         ]);
         $new_payment->save();
 
@@ -140,7 +140,7 @@ class ClientsController extends Controller
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,  $clients)
+    public function update(Request $request, $payment_id)
     {
         $validated = $request->validate([
             'name' => 'required',
@@ -152,11 +152,13 @@ class ClientsController extends Controller
 
         ]);
 
-        $clients = clients::find($clients);
-        $clients->fill($request->all())->save();
-        return response()->json([
-            'clients' => $clients
-        ]);
+        $payment = payments::find($payment_id);
+        $client = clients::find($payment->clients_id);  
+        $user = User::find($client->users_id);
+
+
+        //$clients->fill($request->all())->save();
+        return response(['message' => 'ok'], 200);
     }
 
     /**
