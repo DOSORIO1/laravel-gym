@@ -17,7 +17,7 @@ class ClientsController extends Controller {
 
         $clients_list = DB::select(
             '
-            SELECT clients.*, users.name,users.email, payments.start_date, payments.finish_date, rates.name AS rates , rates.price, users.roles_id, clients.companies_id
+            SELECT clients.*, users.name,users.email,users.password, payments.start_date, payments.finish_date, rates.name AS rates , rates.price, users.roles_id, clients.companies_id
             FROM clients, users, payments, rates, roles, companies
             WHERE clients.users_id = users.id
             AND  clients.id = payments.clients_id
@@ -144,7 +144,6 @@ class ClientsController extends Controller {
             //user
             'name' => 'required',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'required|min:6|confirmed',
             //clients
             'age' => 'required|numeric|digits_between:1,2',
             'weight' =>  'required|numeric|digits_between:1,3',
@@ -158,7 +157,7 @@ class ClientsController extends Controller {
         $user->fill([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
             'roles_id' => 4, //Rol cliente
             'companies_id' => $request->companies_id,
         ]);
