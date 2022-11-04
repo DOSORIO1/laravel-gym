@@ -10,4 +10,8 @@ class clients extends Model
     use HasFactory;
     protected $table = 'clients';
     protected $guarded = [];
+
+    public function payments() {
+        return $this->hasMany(payments::class)->orderBy('created_at', 'ASC');
+    }
 }

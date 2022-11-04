@@ -17,7 +17,7 @@ class ClientsController extends Controller {
 
         $clients_list = DB::select(
             '
-            SELECT clients.*, users.name,users.email,users.password, payments.start_date, payments.finish_date, rates.name AS rates , rates.price, users.roles_id, clients.companies_id
+            SELECT clients.*, users.name,users.email,users.password, payments.start_date, payments.finish_date, rates.name AS rates, rates.id AS rates_id , rates.price, users.roles_id, clients.companies_id
             FROM clients, users, payments, rates, roles, companies
             WHERE clients.users_id = users.id
             AND  clients.id = payments.clients_id
@@ -134,11 +134,11 @@ class ClientsController extends Controller {
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $payment_id) {
+    public function update(Request $request, $user_id) {
 
-        $payment = payments::find($payment_id);
-        $client = clients::find($payment->clients_id);
-        $user = User::find($client->users_id);
+        $user = User::find($user_id);
+        $client = clients::where('users_id', $user_id)->first();
+        $payment = $client->payments[0]; //0: Primer pago
 
         $validated = $request->validate([
             //user
@@ -171,7 +171,7 @@ class ClientsController extends Controller {
         ]);
         $client->save();
 
-        $payment = payments::create([
+        $payment->fill([
             'rates_id' => $request->rates_id,
             'total' => $request->total,
             'start_date' => $request->start_date,
