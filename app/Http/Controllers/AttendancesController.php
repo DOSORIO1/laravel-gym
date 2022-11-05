@@ -15,22 +15,21 @@ class AttendancesController extends Controller
      */
     public function index()
     {
-        $attendance_list = attendances::all();
-        return  $attendance_list;
+        // $attendance_list = attendances::all();
+        // return  $attendance_list;
     
         $attendances_list = DB::select(
             '
-            SELECT clients.name, clients.id, attendances.time, COUNT(attendances.clients_id) AS asiste 
-            FROM clients, attendances
-            WHERE clients.id = attendances.clients_id
-            
-            GROUP BY clients.name
-            
-            '
-            // SELECT roles.name, users.name
-            // FROM roles, users
-            // WHERE roles.id = users.roles_id
-            // AND roles.code = "C"
+            SELECT users.name, users.id, attendances.time, attendances.date, COUNT(attendances.clients_id) AS asiste
+            FROM roles, users, clients, attendances
+            WHERE attendances.date BETWEEN "2020-10-01" AND "2022-10-08"
+            AND roles.id = users.roles_id
+            AND users.id = clients.users_id
+            AND clients.id = attendances.clients_id 
+            AND roles.id = 4
+            GROUP BY users.id
+            ORDER BY users.name ASC
+            '           
         );
 
         return response([
