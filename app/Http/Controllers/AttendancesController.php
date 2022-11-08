@@ -27,8 +27,8 @@ class AttendancesController extends Controller
             AND users.id = clients.users_id
             AND clients.id = attendances.clients_id 
             AND roles.id = 4
-            GROUP BY users.id
-            ORDER BY users.name ASC
+            group by users.id
+            order by users.name ASC
             '           
         );
 

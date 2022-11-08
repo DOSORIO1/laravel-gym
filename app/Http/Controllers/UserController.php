@@ -16,8 +16,22 @@ class UserController extends Controller
      */
     public function index()
     {
-        // $users_list = user::all();
-        // return  $users_list;
+        $clients_list = DB::select(
+            '
+           
+            
+            '
+            //    SELECT clients.age, clients.weight, clients.nivel, clients.injures, users.name,users.email,payments.start_date, payments.finish_date,rates.name AS tarifa ,rates.price,users.roles_id
+            //     FROM clients, users,payments,rates, roles
+            //     WHERE clients.users_id = users.id
+            //     AND  clients.id = payments.clients_id
+            //     AND rates.id = payments.rates_id
+            //     AND users.roles_id = 4
+        );
+
+        return response([
+            'clients_list' => $clients_list,
+        ]);
     }
 
     
