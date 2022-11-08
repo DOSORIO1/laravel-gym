@@ -10,8 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class ClientsController extends Controller {
-    public function index() {
+class ClientsController extends Controller
+{
+    public function index()
+    {
         // $client_list = clients::all();
         // return  $client_list;
 
@@ -50,7 +52,8 @@ class ClientsController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         return View('create');
     }
 
@@ -60,7 +63,8 @@ class ClientsController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         $validated = $request->validate([
             //user
@@ -114,7 +118,8 @@ class ClientsController extends Controller {
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function show(clients $clients) {
+    public function show(clients $clients)
+    {
         //
     }
 
@@ -124,7 +129,8 @@ class ClientsController extends Controller {
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function edit(clients $clients) {
+    public function edit(clients $clients)
+    {
     }
 
     /**
@@ -134,7 +140,8 @@ class ClientsController extends Controller {
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $user_id) {
+    public function update(Request $request, $user_id)
+    {
 
         $user = User::find($user_id);
         $client = clients::where('users_id', $user_id)->first();
@@ -189,10 +196,21 @@ class ClientsController extends Controller {
      * @param  \App\Models\clients  $clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
-        $new_clients = clients::find($id);
-        $new_clients->delete();
+    public function destroy($id)
+    {
+        $client = User::find($id);
+        $client->delete();
 
-        //
+        return response([
+            
+        ]);
+    }
+
+    public function restore($id){
+        $client = user::withTrashed()->find($id);
+        $client ->restore();
+        return response([
+            'message' => 'cliente restablecido exitosamente..'
+        ]);
     }
 }

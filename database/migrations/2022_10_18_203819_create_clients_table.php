@@ -24,6 +24,7 @@ class CreateClientsTable extends Migration
             $table->string('injures');
             $table->foreignId('users_id')->constrained();
             $table->foreignId('companies_id')->constrained();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
