@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\sales;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
@@ -14,7 +15,20 @@ class SalesController extends Controller
      */
     public function index()
     {
-        //
+        $sales_list = DB::select(
+            '
+            SELECT users.name, sales.subtotal,sales.total,sales.iva,sales.date, sales.reference, COUNT(sales.users_id) AS cantidad
+            FROM  users, sales, roles
+            WHERE users.id = sales.users_id
+            AND users.roles_id = roles.id
+            AND roles.id = 3
+          
+            '
+        );
+
+        return response([
+            'sales_list' => $sales_list,
+        ]);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\companies;
 use App\Models\rates;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompaniesController extends Controller
 {
@@ -15,7 +16,20 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        //
+
+        $companies_list = DB::select(
+            '
+            SELECT companies.name, companies.name,companies.logo,companies.phone_number AS numero ,companies.address
+            FROM companies;
+            
+            '
+           
+        );
+
+        return response([
+            'companies_list' => $companies_list,
+        ]);
+        
     }
 
     /**
@@ -36,7 +50,24 @@ class CompaniesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            
+            'name' => 'required',
+            'logo' => 'required',
+            'address' => 'required',       
+            'phone_number' => 'required',
+        ]);
+       
+
+        $new_companie = companies::create([
+            'name' => $request->name,
+            'logo' => $request->logo,
+            'address' => $request->address,
+            'phone_number' => $request->phone_number,
+            
+        ]);
+        $new_companie->save();
+        return response(['message' => 'Successfully created company'], 200);
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\RatesController;
+use App\Http\Controllers\SalesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Sanctum;
@@ -32,6 +33,7 @@ Route::middleware('auth:sanctum')->get('/logout', [AuthController::class, 'logou
 Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user', [AuthController::class, 'user']);
+    
 });
 
 //password
@@ -43,3 +45,10 @@ Route::resource('/clients', ClientsController::class);
 Route::resource('/attendances', AttendancesController::class);
 // tarifa
 Route::get('/companies/rates/{id}', [CompaniesController::class, 'rates']);
+//sales
+Route::resource('/sales', SalesController::class);
+
+// compañias
+Route::resource('/companies', CompaniesController::class);
+
+// Route::delete('clients/restore/{user}', [ClientsController::class, 'restore']);
