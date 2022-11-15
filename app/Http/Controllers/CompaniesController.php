@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\companies;
 use App\Models\rates;
+use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -39,7 +40,7 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        //
+        return View('create');
     }
 
     /**
@@ -53,15 +54,18 @@ class CompaniesController extends Controller
         $validated = $request->validate([
             
             'name' => 'required',
-            'logo' => 'required',
+            'logo' =>  'nullable|image',
             'address' => 'required',       
-            'phone_number' => 'required',
+            // 'phone_number' => 'required',
         ]);
+
+   //Save image in server and get its url
+        $url_image = $this->validate_image($request);
        
 
         $new_companie = companies::create([
             'name' => $request->name,
-            'logo' => $request->logo,
+            'logo' =>$url_image,
             'address' => $request->address,
             'phone_number' => $request->phone_number,
             
@@ -99,9 +103,43 @@ class CompaniesController extends Controller
      * @param  \App\Models\companies  $companies
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, companies $companies)
+    public function update(Request $request, $id)
     {
-        //
+        $companie = companies::find($id);
+
+        $request->validate([
+            'name' => 'required|string',
+            'phone_number' => 'required',
+            'address' => 'required'
+
+        ]);
+
+         //Guardar nueva imagen
+        if ($request->updated) {
+
+            $request->validate([
+                'image' => 'nullable|image'
+            ]);
+
+            //Eliminar la imagen anterior
+            if (File::exists(public_path( $companie->image)))
+                File::delete(public_path( $companie->image));
+
+                $companie->image = $this->validate_image($request);
+        }
+
+        $companie->name = $request->name;
+        $companie->phone_number = $request->phone_number;
+        $companie->address = $request->address;
+
+        $companie->save();
+
+        return response([
+            'message' => 'Cliente actualizado exitósamente.',
+        ]);
+
+
+
     }
 
     /**
@@ -121,6 +159,19 @@ class CompaniesController extends Controller
         return response([
             'rates_list' => $rates_list
         ]);
+    }
+
+    public function validate_image($request) {
+
+        if ($request->hasfile('logo')) {
+            $name = uniqid() . time() . '.' . $request->file('logo')->getClientOriginalExtension(); //46464611435281365.jpg
+            $request->file('logo')->storeAs('public', $name);
+            return '/storage' . '/' . $name; //uploads/46464611435281365.jpg
+
+        } else {
+
+            return null;
+        }
     }
 
     
