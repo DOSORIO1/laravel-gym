@@ -115,28 +115,28 @@ class CompaniesController extends Controller
         ]);
 
          //Guardar nueva imagen
-        if ($request->updated) {
+        // if ($request->updated) {
 
-            $request->validate([
-                'image' => 'nullable|image'
-            ]);
+        //     $request->validate([
+        //         'image' => 'nullable|image'
+        //     ]);
 
-            //Eliminar la imagen anterior
-            if (File::exists(public_path( $companie->image)))
-                File::delete(public_path( $companie->image));
+        //     //Eliminar la imagen anterior
+        //     if (File::exists(public_path( $companie->image)))
+        //         File::delete(public_path( $companie->image));
 
-                $companie->image = $this->validate_image($request);
-        }
+        //         $companie->image = $this->validate_image($request);
+        // }
 
-        $companie->name = $request->name;
-        $companie->phone_number = $request->phone_number;
-        $companie->address = $request->address;
+        // $companie->name = $request->name;
+        // $companie->phone_number = $request->phone_number;
+        // $companie->address = $request->address;
 
-        $companie->save();
+        // $companie->save();
 
-        return response([
-            'message' => 'Cliente actualizado exitósamente.',
-        ]);
+        // return response([
+        //     'message' => 'Cliente actualizado exitósamente.',
+        // ]);
 
 
 
@@ -161,18 +161,18 @@ class CompaniesController extends Controller
         ]);
     }
 
-    public function validate_image($request) {
+    // public function validate_image($request) {
 
-        if ($request->hasfile('logo')) {
-            $name = uniqid() . time() . '.' . $request->file('logo')->getClientOriginalExtension(); //46464611435281365.jpg
-            $request->file('logo')->storeAs('public', $name);
-            return '/storage' . '/' . $name; //uploads/46464611435281365.jpg
+    //     if ($request->hasfile('logo')) {
+    //         $name = uniqid() . time() . '.' . $request->file('logo')->getClientOriginalExtension(); //46464611435281365.jpg
+    //         $request->file('logo')->storeAs('public', $name);
+    //         return '/storage' . '/' . $name; //uploads/46464611435281365.jpg
 
-        } else {
+    //     } else {
 
-            return null;
-        }
-    }
+    //         return null;
+    //     }
+    // }
 
     
 }
