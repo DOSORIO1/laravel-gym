@@ -15,7 +15,7 @@ class PaymentsFactory extends Factory
     {
         return [
             'rates_id'=>$this->faker->numberBetween($min = 1 , $max = 4),
-            'clients_id'=>$this->faker->numberBetween($min = 1 , $max = 20),
+            'clients_id'=>$this->faker->numberBetween($min = 1 , $max = 30),
             'total'=>$this->faker->numberBetween($min = 15000 , $max = 60000),
             'start_date'=>$this->faker->date(),
             'finish_date'=>$this->faker->date(),

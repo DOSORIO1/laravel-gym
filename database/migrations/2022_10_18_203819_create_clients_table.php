@@ -22,8 +22,7 @@ class CreateClientsTable extends Migration
             $table->string('fingerprint')->nullable();
             // $table->string('email');
             $table->string('injures');
-            $table->foreignId('users_id')->constrained();
-            $table->foreignId('companies_id')->constrained();
+            $table->foreignId('users_id')->constrained()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -56,16 +56,16 @@ class CompaniesController extends Controller
             'name' => 'required',
             'logo' =>  'nullable|image',
             'address' => 'required',       
-            // 'phone_number' => 'required',
+            'phone_number' => 'required',
         ]);
 
    //Save image in server and get its url
-        $url_image = $this->validate_image($request);
+        // $url_image = $this->validate_image($request);
        
 
         $new_companie = companies::create([
             'name' => $request->name,
-            'logo' =>$url_image,
+            // 'logo' =>$url_image,
             'address' => $request->address,
             'phone_number' => $request->phone_number,
             

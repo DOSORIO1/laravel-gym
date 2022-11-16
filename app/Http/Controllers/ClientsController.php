@@ -12,25 +12,41 @@ use Illuminate\Support\Facades\Hash;
 
 class ClientsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // $client_list = clients::all();
         // return  $client_list;
 
         $clients_list = DB::select(
-            '
-            SELECT clients.*, users.image, users.name,users.email,users.password, payments.start_date, payments.finish_date, rates.name AS rates, rates.id AS rates_id , rates.price, users.roles_id, clients.companies_id
+            'SELECT 
+            clients.*, 
+            clients.users_id AS id, 
+            users.image, 
+            users.name,
+            users.email,
+            users.password, 
+            payments.start_date, 
+            payments.finish_date, 
+            rates.name AS rates, 
+            rates.id AS rates_id, 
+            rates.price, 
+            users.roles_id, 
+            users.companies_id AS companies_id, 
+            MAX(payments.start_date) as fecha_inicio,
+            MAX(payments.finish_date) as fecha_final
+
             FROM clients, users, payments, rates, roles, companies
             WHERE clients.users_id = users.id
             AND  clients.id = payments.clients_id
             AND rates.id = payments.rates_id
-            AND companies.id = clients.companies_id
+            AND companies.id = users.companies_id
+            AND users.companies_id = ' . $request->companies_id . '
             AND users.roles_id = roles.id
             AND roles.code = "C"  
-            ORDER BY `clients`.`users_id` ASC
-           
-            
-            '
+            AND users.deleted_at IS NULL  
+            GROUP BY users.id   
+			ORDER BY users.companies_id DESC'
+
             //    SELECT clients.age, clients.weight, clients.nivel, clients.injures, users.name,users.email,payments.start_date, payments.finish_date,rates.name AS tarifa ,rates.price,users.roles_id
             //     FROM clients, users,payments,rates, roles
             //     WHERE clients.users_id = users.id
@@ -199,17 +215,16 @@ class ClientsController extends Controller
      */
     public function destroy($id)
     {
-        $client = User::find($id);
-        $client->delete();
+        $user = User::find($id);
+        $user->delete();
 
-        return response([
-            
-        ]);
+        return response([]);
     }
 
-    public function restore($id){
+    public function restore($id)
+    {
         $client = user::withTrashed()->find($id);
-        $client ->restore();
+        $client->restore();
         return response([
             'message' => 'cliente restablecido exitosamente..'
         ]);
