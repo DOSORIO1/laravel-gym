@@ -47,16 +47,15 @@ class ClientsController extends Controller
             GROUP BY users.id   
 			ORDER BY users.companies_id DESC'
 
-            //    SELECT clients.age, clients.weight, clients.nivel, clients.injures, users.name,users.email,payments.start_date, payments.finish_date,rates.name AS tarifa ,rates.price,users.roles_id
-            //     FROM clients, users,payments,rates, roles
-            //     WHERE clients.users_id = users.id
-            //     AND  clients.id = payments.clients_id
-            //     AND rates.id = payments.rates_id
-            //     AND users.roles_id = 4
+
+        );
+        $client_delete = DB::select(
+            ''
         );
 
         return response([
             'clients_list' => $clients_list,
+            'delete_list' => $client_delete 
         ]);
     }
 
@@ -82,6 +81,7 @@ class ClientsController extends Controller
      */
     public function store(Request $request)
     {
+        $url_image = $this->validate_image($request);
 
         $validated = $request->validate([
             //user
@@ -93,6 +93,7 @@ class ClientsController extends Controller
             'weight' =>  'required|numeric|digits_between:1,3',
             'injures' => 'required',
             'nivel' => 'required',
+            'image' => 'nullable|image',
             //payments
             // 'total' => 'required|numeric',
             'start_date' => 'required',
@@ -100,6 +101,7 @@ class ClientsController extends Controller
 
         $new_user = User::create([
             'name' => $request->name,
+            'image' => $url_image,
             'email' => $request->email,
             'password' => $request->password,
             'roles_id' => 4, //Rol cliente
@@ -113,7 +115,7 @@ class ClientsController extends Controller
             'weight' => $request->weight,
             'nivel' => $request->nivel,
             'injures' => $request->injures,
-            'companies_id' => $request->companies_id,
+            
         ]);
         $new_clients->save();
 
@@ -204,7 +206,7 @@ class ClientsController extends Controller
         $payment->save();
 
         //$clients->fill($request->all())->save();
-        return response(['message' => 'ok'], 200);
+        return response(['message' => 'Cliente creado exitósamente.',], 200);
     }
 
     /**
@@ -228,5 +230,17 @@ class ClientsController extends Controller
         return response([
             'message' => 'cliente restablecido exitosamente..'
         ]);
+    }
+    public function validate_image($request) {
+
+        if ($request->hasfile('image')) {
+            $name = uniqid() . time() . '.' . $request->file('image')->getClientOriginalExtension(); //46464611435281365.jpg
+            $request->file('image')->storeAs('public', $name);
+            return '/storage' . '/' . $name; //uploads/46464611435281365.jpg
+
+        } else {
+
+            return null;
+        }
     }
 }
