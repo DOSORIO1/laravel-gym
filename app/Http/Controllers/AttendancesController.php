@@ -20,7 +20,7 @@ class AttendancesController extends Controller
     
         $attendances_list = DB::select(
             '
-            SELECT users.name, users.id, attendances.time, attendances.date, COUNT(attendances.clients_id) AS asiste
+            SELECT users.name, users.image, users.id, attendances.time, attendances.date, COUNT(attendances.clients_id) AS asiste
             FROM roles, users, clients, attendances
             WHERE attendances.date BETWEEN "2020-10-01" AND "2022-10-08"
             AND roles.id = users.roles_id

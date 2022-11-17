@@ -49,13 +49,20 @@ class ClientsController extends Controller
 
 
         );
-        $client_delete = DB::select(
-            ''
+        $delete_list = DB::select(
+            'SELECT users.*
+            FROM users, roles, clients, companies
+            WHERE roles.id = users.roles_id
+            AND users.id = clients.users_id
+            AND companies.id = users.companies_id
+            AND companies.id = ' . $request->companies_id . '
+            AND roles.code = "C"
+            AND users.deleted_at IS NOT NULL'
         );
 
         return response([
             'clients_list' => $clients_list,
-            'delete_list' => $client_delete 
+            'delete_list' => $delete_list 
         ]);
     }
 
@@ -225,8 +232,8 @@ class ClientsController extends Controller
 
     public function restore($id)
     {
-        $client = user::withTrashed()->find($id);
-        $client->restore();
+        $user= user::withTrashed()->find($id);
+        $user->restore();
         return response([
             'message' => 'cliente restablecido exitosamente..'
         ]);

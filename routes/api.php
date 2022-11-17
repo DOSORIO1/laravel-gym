@@ -51,4 +51,4 @@ Route::resource('/sales', SalesController::class);
 // compañias
 Route::resource('/companies', CompaniesController::class);
 
-// Route::delete('clients/restore/{user}', [ClientsController::class, 'restore']);
+Route::delete('clients/restore/{client}', [ClientsController::class, 'restore']);
