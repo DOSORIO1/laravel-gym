@@ -60,9 +60,22 @@ class ClientsController extends Controller
             AND users.deleted_at IS NOT NULL'
         );
 
+        $employed_list = DB::select(
+            'SELECT users.*
+            FROM users, roles, clients, companies
+            WHERE roles.id = users.roles_id
+            AND users.id = clients.users_id
+            AND companies.id = users.companies_id
+            AND companies.id = ' . $request->companies_id . '
+            AND roles.id = 3'
+        );
+
+        
+
         return response([
             'clients_list' => $clients_list,
-            'delete_list' => $delete_list 
+            'delete_list' => $delete_list,
+           'employed_list'=> $employed_list
         ]);
     }
 
