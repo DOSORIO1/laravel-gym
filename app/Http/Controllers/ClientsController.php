@@ -124,7 +124,7 @@ class ClientsController extends Controller
             'image' => $url_image,
             'email' => $request->email,
             'password' => $request->password,
-            'roles_id' => 4, //Rol cliente
+            'roles_id' => $request->roles_id,
             'companies_id' => $request->companies_id,
         ]);
         $new_user->save();
@@ -204,7 +204,7 @@ class ClientsController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'roles_id' => 4, //Rol cliente
+            'roles_id' => $request->roles_id,
             'companies_id' => $request->companies_id,
         ]);
         $user->save();

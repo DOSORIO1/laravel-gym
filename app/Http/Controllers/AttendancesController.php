@@ -13,7 +13,7 @@ class AttendancesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(request $request)
     {
         // $attendance_list = attendances::all();
         // return  $attendance_list;
@@ -21,11 +21,13 @@ class AttendancesController extends Controller
         $attendances_list = DB::select(
             '
             SELECT users.name, users.image, users.id, attendances.time, attendances.date, COUNT(attendances.clients_id) AS asiste
-            FROM roles, users, clients, attendances
+            FROM roles, users, clients, attendances, companies
             WHERE attendances.date BETWEEN "2020-10-01" AND "2022-10-08"
             AND roles.id = users.roles_id
             AND users.id = clients.users_id
+            AND companies.id = users.companies_id
             AND clients.id = attendances.clients_id 
+            AND users.companies_id = ' . $request->companies_id . '
             AND roles.id = 4
             group by users.id
             order by users.name ASC
