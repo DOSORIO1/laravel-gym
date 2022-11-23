@@ -101,8 +101,6 @@ class ClientsController extends Controller
      */
     public function store(Request $request)
     {
-        $url_image = $this->validate_image($request);
-
         $validated = $request->validate([
             //user
             'name' => 'required',
@@ -118,6 +116,8 @@ class ClientsController extends Controller
             // 'total' => 'required|numeric',
             'start_date' => 'required',
         ]);
+
+        $url_image = $this->validate_image($request);
 
         $new_user = User::create([
             'name' => $request->name,

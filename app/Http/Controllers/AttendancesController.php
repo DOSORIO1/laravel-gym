@@ -18,11 +18,13 @@ class AttendancesController extends Controller
         // $attendance_list = attendances::all();
         // return  $attendance_list;
     
+
+        
         $attendances_list = DB::select(
             '
             SELECT users.name, users.image, users.id, attendances.time, attendances.date, COUNT(attendances.clients_id) AS asiste
             FROM roles, users, clients, attendances, companies
-            WHERE attendances.date BETWEEN "2020-10-01" AND "2022-10-08"
+            WHERE attendances.date BETWEEN "' . $request->start_date . '" AND "' . $request->finish_date . '"
             AND roles.id = users.roles_id
             AND users.id = clients.users_id
             AND companies.id = users.companies_id
@@ -33,6 +35,8 @@ class AttendancesController extends Controller
             order by users.name ASC
             '           
         );
+
+        
 
         return response([
             'attendances_list' => $attendances_list,
