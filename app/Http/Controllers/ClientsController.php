@@ -9,6 +9,7 @@ use Facade\FlareClient\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 
 class ClientsController extends Controller
 {
@@ -199,6 +200,21 @@ class ClientsController extends Controller
             // 'total' => 'required|numeric',
             'start_date' => 'required',
         ]);
+         //Guardar nueva imagen
+        if ($request->updated) {
+
+            $request->validate([
+                'image' => 'nullable|image'
+            ]);
+
+            //Eliminar la imagen anterior
+            if (File::exists(public_path($user->image)))
+                File::delete(public_path($user->image));
+
+            $user->image = $this->validate_image($request);
+        }
+        
+        
 
         $user->fill([
             'name' => $request->name,
@@ -226,7 +242,9 @@ class ClientsController extends Controller
         $payment->save();
 
         //$clients->fill($request->all())->save();
-        return response(['message' => 'Cliente creado exitósamente.',], 200);
+        return response([
+            'message' => 'Cliente actualizado exitósamente.',
+        ]);
     }
 
     /**
