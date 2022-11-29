@@ -68,15 +68,15 @@ class ClientsController extends Controller
             AND users.id = clients.users_id
             AND companies.id = users.companies_id
             AND companies.id = ' . $request->companies_id . '
-            AND roles.id = 3'
+            AND roles.code = "E"'
         );
 
-        
+
 
         return response([
             'clients_list' => $clients_list,
             'delete_list' => $delete_list,
-           'employed_list'=> $employed_list
+            'employed_list' => $employed_list
         ]);
     }
 
@@ -136,7 +136,7 @@ class ClientsController extends Controller
             'weight' => $request->weight,
             'nivel' => $request->nivel,
             'injures' => $request->injures,
-            
+
         ]);
         $new_clients->save();
 
@@ -150,6 +150,35 @@ class ClientsController extends Controller
         $new_payment->save();
 
         return response(['message' => 'ok'], 200);
+    }
+
+
+
+    public function employed(Request $request)
+    {
+        $validated = $request->validate([
+            //user employed
+            'name' => 'required',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+            'image' => 'nullable|image',
+
+        ]);
+
+        $url_image = $this->validate_image($request);
+
+        $new_user = User::create([
+            'name' => $request->name,
+            'image' => $url_image,
+            'email' => $request->email,
+            'password' => $request->password,
+            'roles_id' => 3,
+            'companies_id' => $request->companies_id,
+        ]);
+        $new_user->save();
+
+
+        return response(['message' => 'nuevo empleado creado'], 200);
     }
 
     /**
@@ -200,7 +229,7 @@ class ClientsController extends Controller
             // 'total' => 'required|numeric',
             'start_date' => 'required',
         ]);
-         //Guardar nueva imagen
+        //Guardar nueva imagen
         if ($request->updated) {
 
             $request->validate([
@@ -213,8 +242,8 @@ class ClientsController extends Controller
 
             $user->image = $this->validate_image($request);
         }
-        
-        
+
+
 
         $user->fill([
             'name' => $request->name,
@@ -263,13 +292,14 @@ class ClientsController extends Controller
 
     public function restore($id)
     {
-        $user= user::withTrashed()->find($id);
+        $user = user::withTrashed()->find($id);
         $user->restore();
         return response([
             'message' => 'cliente restablecido exitosamente..'
         ]);
     }
-    public function validate_image($request) {
+    public function validate_image($request)
+    {
 
         if ($request->hasfile('image')) {
             $name = uniqid() . time() . '.' . $request->file('image')->getClientOriginalExtension(); //46464611435281365.jpg
