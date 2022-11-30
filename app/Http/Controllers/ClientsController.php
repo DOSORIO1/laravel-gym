@@ -63,9 +63,8 @@ class ClientsController extends Controller
 
         $employed_list = DB::select(
             'SELECT users.*
-            FROM users, roles, clients, companies
+            FROM users, roles, companies
             WHERE roles.id = users.roles_id
-            AND users.id = clients.users_id
             AND companies.id = users.companies_id
             AND companies.id = ' . $request->companies_id . '
             AND roles.code = "E"'
