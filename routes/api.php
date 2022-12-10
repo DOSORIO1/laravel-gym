@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\RatesController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Sanctum;
@@ -45,6 +46,7 @@ Route::resource('/clients', ClientsController::class);
 //ruta para crear  empleados
 Route::post('/empleado', [ClientsController::class, 'employed']);
 //!RUTAS PARA ACTUALIZAR IMAGENES
+
 Route::post('clients/update/{client}', [ClientsController::class, 'update']);
 //!...
 Route::resource('/attendances', AttendancesController::class);
