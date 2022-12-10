@@ -14,7 +14,7 @@ class DetailInvoiceFactory extends Factory
     public function definition()
     {
         return [
-            'sales_id'=>$this->faker->numberBetween($min = 1 , $max = 4),
+            'sales_id'=>$this->faker->numberBetween($min = 1 , $max = 20),
             'products_id'=>$this->faker->numberBetween($min = 1 , $max = 20),
             'amount'=>$this->faker->numberBetween($min = 1 , $max = 20),
             'unit_value'=>$this->faker->numberBetween($min = 50000 , $max = 150000),
