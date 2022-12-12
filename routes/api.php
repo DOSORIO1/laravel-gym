@@ -46,7 +46,7 @@ Route::resource('/clients', ClientsController::class);
 //ruta para crear  empleados
 Route::post('/empleado', [ClientsController::class, 'employed']);
 //!RUTAS PARA ACTUALIZAR IMAGENES
-
+Route::post('client/update/{user}', [ClientsController::class, 'updated']);
 Route::post('clients/update/{client}', [ClientsController::class, 'update']);
 //!...
 Route::resource('/attendances', AttendancesController::class);

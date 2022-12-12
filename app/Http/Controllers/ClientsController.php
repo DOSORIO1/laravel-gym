@@ -274,6 +274,50 @@ class ClientsController extends Controller
             'message' => 'Cliente actualizado exitósamente.',
         ]);
     }
+    public function updated(Request $request, $user_id)
+    {
+
+        $user = User::find($user_id);
+
+        $validated = $request->validate([
+            //user
+            'name' => 'required',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            
+            
+          
+        ]);
+        //Guardar nueva imagen
+        if ($request->updated) {
+
+            $request->validate([
+                'image' => 'nullable|image'
+            ]);
+
+            //Eliminar la imagen anterior
+            if (File::exists(public_path($user->image)))
+                File::delete(public_path($user->image));
+
+            $user->image = $this->validate_image($request);
+        }
+
+
+
+        $user->fill([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'roles_id' => $request->roles_id,
+            'companies_id' => $request->companies_id,
+        ]);
+        $user->save();
+
+     //$clients->fill($request->all())->save();
+        return response([
+            'message' => 'Cliente actualizado exitósamente.',
+        ]);
+    }
+
 
     /**
      * Remove the specified resource from storage.
