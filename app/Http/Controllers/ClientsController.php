@@ -247,7 +247,6 @@ class ClientsController extends Controller
         $user->fill([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
             'roles_id' => $request->roles_id,
             'companies_id' => $request->companies_id,
         ]);
@@ -306,7 +305,6 @@ class ClientsController extends Controller
         $user->fill([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
             'roles_id' => $request->roles_id,
             'companies_id' => $request->companies_id,
         ]);
