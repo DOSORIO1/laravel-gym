@@ -16,20 +16,19 @@ class SalesController extends Controller
     public function index(Request $request)
     {
         $sales_list = DB::select(
-            '
-            SELECT users.name,COUNT(users.id) AS cantidad_ventas, sales.local_sale, sales.reference,
-             sales.date,detail_invoices.unit_value * detail_invoices.amount AS total, 
-             detail_invoices.unit_value,detail_invoices.amount
-            FROM roles, users, companies, sales, detail_invoices
-            WHERE roles.id = users.roles_id
-            AND users.id = sales.users_id
-            AND users.companies_id = companies.id
-            AND sales.id = detail_invoices.sales_id
-            AND roles.id = 3
-            AND companies.id = 2
-            GROUP BY users.name;
-          
-            '
+
+        'SELECT users.name, products.name AS product, COUNT(users.id) AS cantidad_ventas, sales.local_sale, sales.reference,
+          sales.date,detail_invoices.unit_value * detail_invoices.amount AS total, 
+          detail_invoices.unit_value,detail_invoices.amount
+          FROM roles, users, companies,categories, products, sales, detail_invoices
+          WHERE roles.id = users.roles_id
+          AND users.id = sales.users_id
+          AND users.companies_id = companies.id
+          AND sales.id = detail_invoices.sales_id
+          AND products.id = detail_invoices.products_id
+          AND roles.id = 3
+          AND companies.id = 2
+          GROUP BY users.name;'
         );
 
         return response([

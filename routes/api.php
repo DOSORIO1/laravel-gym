@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\CompaniesController;
+use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\RatesController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\UserController;
@@ -59,3 +60,7 @@ Route::resource('/sales', SalesController::class);
 Route::resource('/companies', CompaniesController::class);
 
 Route::delete('clients/restore/{client}', [ClientsController::class, 'restore']);
+// inventory
+Route::resource('/products', ProductsController::class);
+//////actualizar inventario
+Route::post('inventory/update/{description}', [ClientsController::class, 'update']);
