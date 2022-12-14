@@ -63,4 +63,4 @@ Route::delete('clients/restore/{client}', [ClientsController::class, 'restore'])
 // inventory
 Route::resource('/products', ProductsController::class);
 //////actualizar inventario
-Route::post('inventory/update/{description}', [ClientsController::class, 'update']);
+Route::post('inventory/update/{product}', [ProductsController::class, 'update']);

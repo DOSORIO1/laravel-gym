@@ -18,12 +18,12 @@ class ProductsController extends Controller
     public function index(Request $request)
     {
         $products_list = DB::select(
-            'SELECT products.name,products.image, products.code,products.amount,products.price, categories.description
-            FROM products,categories,companies
-            WHERE products.categories_id = categories.id
-            AND categories.companies_id = companies.id
-            AND companies.id = ' . $request->companies_id . '
-            GROUP BY products.name          
+            'SELECT products.*,categories.name
+            FROM companies, categories,products
+            WHERE companies.id = categories.companies_id
+            AND categories.id = products.categories_id
+            AND companies.id = 2
+            ORDER BY products.id DESC          
             '
            
         );
@@ -83,22 +83,17 @@ class ProductsController extends Controller
      * @param  \App\Models\products  $products
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
 
-        $product = categories::find($id);
-        $description = products::where('categories_id', $id)->first();
+        $product = products::find($id);
 
-        $validated = $request->validate([
-            //user
-            'name' => 'required',
+
+
+        $request->validate([
+            'name' => 'required|string',
             'price' => 'required',
-            'description'=>'required',
-
-            
-            
-          
         ]);
+
         //Guardar nueva imagen
         if ($request->updated) {
 
@@ -113,24 +108,12 @@ class ProductsController extends Controller
             $product->image = $this->validate_image($request);
         }
 
-
-
-        $product->fill([
-            'name' => $request->name,
-            'amount' => $request->amount,
-            'price' => $request->price,
-        ]);
+        $product->name = $request->name;
+        $product->price = $request->price;
         $product->save();
 
-        $description->fill([
-            'description' => $request->description,
-           
-        ]);
-        $description->save();
-
-     //$clients->fill($request->all())->save();
         return response([
-            'message' => 'product actualizado exitósamente.',
+            'message' => 'producto actualizado exitósamente.',
         ]);
     }
 
