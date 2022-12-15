@@ -25,6 +25,7 @@ class ClientsController extends Controller
             users.image, 
             users.name,
             users.email,
+            clients.dni,
             users.password, 
             payments.start_date, 
             payments.finish_date, 
@@ -132,6 +133,7 @@ class ClientsController extends Controller
         $new_clients = clients::create([
             'users_id' => $new_user->id, //id user
             'age' => $request->age,
+            'dni' => $request->dni,
             'weight' => $request->weight,
             'nivel' => $request->nivel,
             'injures' => $request->injures,

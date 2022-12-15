@@ -14,7 +14,7 @@ class ClientsFactory extends Factory
     public function definition()
     {
         return [
-            // 'name'=>$this->faker->name(),
+            'dni'=> $this->faker->numberBetween($min = 9999999 , $max = 99999999),
             'age'=>$this->faker->numberBetween($min = 14 , $max = 50),
             'weight'=>$this->faker->numberBetween($min = 50 , $max = 120),
             'fingerprint'=>$this->faker->sha256(),

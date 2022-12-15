@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\attendances;
+use App\Models\clients;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,11 +19,11 @@ class AttendancesController extends Controller
     {
         // $attendance_list = attendances::all();
         // return  $attendance_list;
-    
 
-        
+
+
         $attendances_list = DB::select(
-            'SELECT users.name, users.image, users.id, attendances.time, attendances.date, COUNT(attendances.clients_id) AS asiste
+            'SELECT users.name, users.image, users.id, clients.dni, attendances.time, attendances.date, COUNT(attendances.clients_id) AS asiste
              FROM roles, users, clients, attendances, companies
              WHERE attendances.date BETWEEN "' . $request->start_date . '" AND "' . $request->finish_date . '"
              AND roles.id = users.roles_id
@@ -32,10 +34,10 @@ class AttendancesController extends Controller
              AND roles.id = 4
              GROUP BY users.id
              ORDER BY users.name ASC 
-             '           
+             '
         );
 
-        
+
 
         return response([
             'attendances_list' => $attendances_list,
@@ -58,9 +60,26 @@ class AttendancesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'dni' => 'required',
+        ]);
+
+        $client = clients::where('dni', $request->dni)->first();
+
+
+        $new_asistencia = attendances::create([
+            'clients_id' => $client->id,
+            'time' => $request->time,
+            'date' => $request->date,
+        ]);
+        $new_asistencia->save();
+
+        return response(['message' => 'nuevo asistencia creada'], 200);
     }
 
     /**
@@ -69,9 +88,15 @@ class AttendancesController extends Controller
      * @param  \App\Models\attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function show(attendances $attendance)
+    public function show($dni)
     {
-        //
+        $client = clients::where('dni', $dni)->first();
+        $user = User::find($client->users_id);
+
+        $client->name = $user->name;
+        $client->image = $user->image;
+
+        return response(['client' => $client], 200);    
     }
 
     /**

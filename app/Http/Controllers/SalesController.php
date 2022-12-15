@@ -27,7 +27,7 @@ class SalesController extends Controller
           AND sales.id = detail_invoices.sales_id
           AND products.id = detail_invoices.products_id
           AND roles.id = 3
-          AND companies.id = 2
+          AND companies.id = ' . $request->companies_id . '
           GROUP BY users.name;'
         );
 
