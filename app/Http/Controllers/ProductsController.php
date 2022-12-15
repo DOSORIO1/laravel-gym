@@ -22,7 +22,7 @@ class ProductsController extends Controller
             FROM companies, categories,products
             WHERE companies.id = categories.companies_id
             AND categories.id = products.categories_id
-            AND companies.id = 2
+            AND companies.id = 1
             ORDER BY products.id DESC          
             '
            

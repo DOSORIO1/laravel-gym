@@ -13,8 +13,8 @@ class ProductsFactory extends Factory
      */
     public function definition()
     {
-        $faker = \Faker\Factory::create();
-        $faker->addProvider(new \Smknstd\FakerPicsumImages\FakerPicsumImagesProvider($faker));
+        // $faker = \Faker\Factory::create();
+        // $faker->addProvider(new \Smknstd\FakerPicsumImages\FakerPicsumImagesProvider($faker));
         return [
             'image'=> null, //$faker->imageUrl(150, 150 ),
             'name' => $this-> faker->randomElement([' zapatillas nike', ' Zapatillas adidas', 'zapatillas puma','mancuernas','proteina TNT','proteina BIPRO MAX']),

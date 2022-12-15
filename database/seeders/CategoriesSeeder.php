@@ -15,19 +15,19 @@ class CategoriesSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 2; $i <= 5; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
 
             categories::insert([
                 [
-                    'name' => 'nike',
+                    'name' => 'tenis nike',
                     'companies_id' => $i,
                 ],
                 [
-                    'name' => 'adidas',
+                    'name' => 'busos adidas',
                     'companies_id' => $i,
                 ],
                 [
-                    'name' => 'puma',
+                    'name' => 'press de banca',
                     'companies_id' => $i,
                 ],
                

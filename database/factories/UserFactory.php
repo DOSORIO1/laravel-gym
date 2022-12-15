@@ -14,10 +14,10 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $faker = \Faker\Factory::create();
-        $faker->addProvider(new \Smknstd\FakerPicsumImages\FakerPicsumImagesProvider($faker));
+        // $faker = \Faker\Factory::create();
+        // $faker->addProvider(new \Smknstd\FakerPicsumImages\FakerPicsumImagesProvider($faker));
         return [
-            'image'=> $faker->imageUrl(150, 150 ),
+          
             'name'=>$this->faker->name(),
             'email'=>$this->faker->freeEmail(),
             'password'=>$this->faker->password(),

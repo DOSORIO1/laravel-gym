@@ -13,10 +13,10 @@ class CategoriesFactory extends Factory
      */
     public function definition()
     {
-        // return [
-        //     'name' => $this-> faker->randomElement(['implementos deportivos', 'suplementos alimenticios', 'equipos']),
-        //     'companies_id'=>$this->faker->numberBetween($min = 2 , $max = 10),
+        return [
+            'name' => $this-> faker->randomElement(['implementos deportivos', 'suplementos alimenticios', 'equipos']),
+            'companies_id'=>$this->faker->numberBetween($min = 2 , $max = 10),
             
-        // ];
+        ];
     }
 }
